@@ -49,6 +49,7 @@ type DependabotSecurityAdvisory struct {
 // DependabotAlert represents a Dependabot alert.
 type DependabotAlert struct {
 	Number                *int                        `json:"number,omitempty"`
+	Repository            *Repository                 `json:"repository,omitempty"`
 	State                 *string                     `json:"state,omitempty"`
 	Dependency            *Dependency                 `json:"dependency,omitempty"`
 	SecurityAdvisory      *DependabotSecurityAdvisory `json:"security_advisory,omitempty"`

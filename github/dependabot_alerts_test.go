@@ -99,7 +99,7 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 	mux.HandleFunc("/orgs/o/dependabot/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"state": "open"})
-		fmt.Fprint(w, `[{"number":1,"state":"open"},{"number":42,"state":"fixed"}]`)
+		fmt.Fprint(w, `[{"number": 1,"state": "open","repository": {"id": 1,"name": "n","url": "url"}}]`)
 	})
 
 	opts := &ListAlertsOptions{State: String("open")}
@@ -110,8 +110,11 @@ func TestDependabotService_ListOrgAlerts(t *testing.T) {
 	}
 
 	want := []*DependabotAlert{
-		{Number: Int(1), State: String("open")},
-		{Number: Int(42), State: String("fixed")},
+		{Number: Int(1), State: String("open"), Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("url"),
+			Name: String("n"),
+		}},
 	}
 	if !cmp.Equal(alerts, want) {
 		t.Errorf("Dependabot.ListOrgAlerts returned %+v, want %+v", alerts, want)
